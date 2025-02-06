@@ -1,3 +1,20 @@
+/**
+ * COMPLEJIDAD DEL ALGORITMO E NOTACION Big O
+ * 
+ * Al comparar el size de dos palabras el grado de complejidad es O(1) es constante
+ * Al realiza un split sobre las palabras es O(n) en este caso son 2 al descomponer cada una
+ * Al realizar iteraciones sobre bucles es O(n) en este caso son 2 que se realzan para rellenar el map
+ * Al comparar el size de los dos map igual es un grado de complejidad O(1) ya que es un calculo constante
+ * Al realizar la comparacion entre los dos map se esta iterado una serie de datos por ende el grado de complejidad
+ * se vuelve de O(n)
+ * 
+ * En totol tenemos lo siguiente
+ *   O(n) + O(n) + O(n) + O(n) + O(n) ~ O(n)
+ *   Al final la complejidad del algoritmo esta dado por el resultado O(n) donde n es el largo de las palabras
+ */
+
+
+
 //Ingreso de dos palabras diferentes
 palabra1 = "amor";
 palabra2 = "roma";
