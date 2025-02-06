@@ -50,4 +50,6 @@ function anagrama(palabra1, palabra2) {
     return true;
 }
 
-console.log("El resultado es: ", anagrama(palabra1, palabra2));
+console.log("(espada,pesada) El resultado es: ", anagrama("espada", "pesada"));
+console.log("(hola,cola) El resultado es: ", anagrama("hola", "cola"));
+console.log("(amor,roma) El resultado es: ", anagrama("amor", "roma"));
