@@ -29,11 +29,13 @@ function set(value, container) {
 }
 function validacion(input, output) {
     var process = conversion(input);
-    // console.log('Resultado: ', process)
-    if (process === output) {
+    if (process.length !== output.length) {
         return "Fallido";
     }
-    else {
-        return "Exitoso";
+    for (var index = 0; index < process.length; index++) {
+        if (process[index] !== output[index]) {
+            return "Fallido";
+        }
     }
+    return "Exitoso";
 }

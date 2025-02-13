@@ -32,10 +32,14 @@ function set(value: Array<any>, container: Array<any>) {
 
 function validacion(input: Array<any>, output: Array<any>) {
     let process = conversion(input);
-    // console.log('Resultado: ', process)
-    if (process === output) {
+
+    if (process.length !== output.length) {
         return "Fallido"
-    } else {
-        return "Exitoso"
     }
+    for (let index = 0; index < process.length; index++) {
+        if (process[index] !== output[index]) {
+            return "Fallido"
+        }
+    }
+    return "Exitoso"
 }
