@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class DriverServiceTest {
@@ -36,6 +37,18 @@ public class DriverServiceTest {
 
         assertEquals(driver, createdDriver);
         verify(driverRepository, times(1)).save(driver);
+    }
+
+    @Test
+    public void testCreateDriverAlreadyExists() {
+        Driver driver = new Driver("John Doe", 30);
+        when(driverRepository.findByName(driver.getName())).thenReturn(driver);
+
+        assertThrows(RuntimeException.class, () -> {
+            driverService.createDriver(driver);
+        });
+
+        verify(driverRepository, times(0)).save(driver);
     }
 
     @Test

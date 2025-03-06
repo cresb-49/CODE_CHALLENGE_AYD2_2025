@@ -14,6 +14,9 @@ public class DriverService {
     DriverRepository driverRepository;
 
     public Driver createDriver(Driver driver) {
+        if (driverRepository.findByName(driver.getName()) != null) {
+            throw new RuntimeException("Driver with name " + driver.getName() + " already exists");
+        }
         return driverRepository.save(driver);
     }
 

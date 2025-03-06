@@ -10,4 +10,5 @@ public interface DriverRepository extends CrudRepository<Driver, Integer> {
     List<Driver> findAll();
     
     Driver save(Driver driver);
+    Driver findByName(String name);
 }
