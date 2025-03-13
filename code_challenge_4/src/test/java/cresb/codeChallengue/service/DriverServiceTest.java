@@ -1,5 +1,6 @@
 package cresb.codeChallengue.service;
 
+import cresb.codeChallengue.dto.DriverDTO;
 import cresb.codeChallengue.model.Driver;
 import cresb.codeChallengue.repository.DriverRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,5 +61,42 @@ public class DriverServiceTest {
 
         assertEquals(drivers, result);
         verify(driverRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void testUpdateDriver() {
+        Driver driver = new Driver("John Doe", 30);
+        Driver updatedDriver = new Driver("Sara Conor", 31);
+        when(driverRepository.findById(1L)).thenReturn(driver);
+        when(driverRepository.save(driver)).thenReturn(updatedDriver);
+
+        Driver result = driverService.updateDriver(1L, new DriverDTO("Sara Conor", 31));
+
+        assertEquals(updatedDriver, result);
+        verify(driverRepository, times(1)).findById(1L);
+        verify(driverRepository, times(1)).save(driver);
+    }
+
+    @Test
+    public void testUpdateDriverNotFound() {
+        when(driverRepository.findById(1L)).thenReturn(null);
+
+        assertThrows(RuntimeException.class, () -> {
+            driverService.updateDriver(1L, new DriverDTO("Sara Conor", 31));
+        });
+
+        verify(driverRepository, times(1)).findById(1L);
+        verify(driverRepository, times(0)).save(any(Driver.class));
+    }
+
+    @Test
+    public void testDeleteDriver() {
+        Driver driver = new Driver("John Doe", 30);
+        when(driverRepository.findById(1L)).thenReturn(driver);
+
+        driverService.deleteDriver(1L);
+
+        verify(driverRepository, times(1)).findById(1L);
+        verify(driverRepository, times(1)).delete(driver);
     }
 }

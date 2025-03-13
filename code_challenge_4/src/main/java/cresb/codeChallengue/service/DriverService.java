@@ -1,5 +1,6 @@
 package cresb.codeChallengue.service;
 
+import cresb.codeChallengue.dto.DriverDTO;
 import cresb.codeChallengue.model.Driver;
 import java.util.List;
 
@@ -22,6 +23,23 @@ public class DriverService {
 
     public List<Driver> getAllDrivers() {
         return driverRepository.findAll();
+    }
+
+    public Driver updateDriver(Long id, DriverDTO driverDTO) {
+        Driver driver = driverRepository.findById(id);
+        if (driver == null) {
+            throw new RuntimeException("Driver with id " + id + " not found");
+        }
+        driver.update(driverDTO);
+        return driverRepository.save(driver);
+    }
+
+    public void deleteDriver(Long id) {
+        Driver driver = driverRepository.findById(id);
+        if (driver == null) {
+            throw new RuntimeException("Driver with id " + id + " not found");
+        }
+        driverRepository.delete(driver);
     }
 
 }

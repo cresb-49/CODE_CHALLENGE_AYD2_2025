@@ -1,16 +1,17 @@
 package cresb.codeChallengue.model;
 
+import cresb.codeChallengue.dto.DriverDTO;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "driver")
 public class Driver {
-    
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     @Column(name = "name", unique = true)
     private String name;
 
@@ -53,5 +54,14 @@ public class Driver {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public void update(DriverDTO driverDTO) {
+        if (driverDTO.getName() != null) {
+            this.name = driverDTO.getName();
+        }
+        if (driverDTO.getAge() != null) {
+            this.age = driverDTO.getAge();
+        }
     }
 }

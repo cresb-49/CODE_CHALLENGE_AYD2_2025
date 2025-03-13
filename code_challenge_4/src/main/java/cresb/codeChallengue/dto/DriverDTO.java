@@ -2,12 +2,12 @@ package cresb.codeChallengue.dto;
 
 public class DriverDTO {
     private String name;
-    private int age;
+    private Integer age;
 
     public DriverDTO() {
     }
 
-    public DriverDTO(String name, int age) {
+    public DriverDTO(String name, Integer age) {
         this.name = name;
         this.age = age;
     }
@@ -20,7 +20,7 @@ public class DriverDTO {
         this.name = name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
