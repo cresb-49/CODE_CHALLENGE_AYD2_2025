@@ -1,6 +1,8 @@
 package cresb.codeChallengue.service;
 
 import cresb.codeChallengue.dto.DriverDTO;
+import cresb.codeChallengue.exception.DriverAlreadyExists;
+import cresb.codeChallengue.exception.DriverNotExists;
 import cresb.codeChallengue.model.Driver;
 import cresb.codeChallengue.repository.DriverRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class DriverServiceTest {
@@ -43,15 +46,15 @@ public class DriverServiceTest {
     @Test
     public void testCreateDriverAlreadyExists() {
         Driver driver = new Driver("John Doe", 30);
-        when(driverRepository.findByName(driver.getName())).thenReturn(driver);
+        when(driverRepository.save(driver)).thenThrow(DriverAlreadyExists.class);
 
-        assertThrows(RuntimeException.class, () -> {
+        assertThrows(DriverAlreadyExists.class, () -> {
             driverService.createDriver(driver);
         });
 
-        verify(driverRepository, times(0)).save(driver);
+        verify(driverRepository, times(1)).save(driver);
     }
-
+    
     @Test
     public void testGetAllDrivers() {
         List<Driver> drivers = Arrays.asList(new Driver("John Doe", 30), new Driver("Jane Doe", 25));
@@ -81,7 +84,7 @@ public class DriverServiceTest {
     public void testUpdateDriverNotFound() {
         when(driverRepository.findById(1L)).thenReturn(null);
 
-        assertThrows(RuntimeException.class, () -> {
+        assertThrows(DriverNotExists.class, () -> {
             driverService.updateDriver(1L, new DriverDTO("Sara Conor", 31));
         });
 
@@ -98,5 +101,17 @@ public class DriverServiceTest {
 
         verify(driverRepository, times(1)).findById(1L);
         verify(driverRepository, times(1)).delete(driver);
+    }
+
+    @Test
+    public void testDeleteDriverNotFound() {
+        when(driverRepository.findById(1L)).thenReturn(null);
+
+        assertThrows(DriverNotExists.class, () -> {
+            driverService.deleteDriver(1L);
+        });
+
+        verify(driverRepository, times(1)).findById(1L);
+        verify(driverRepository, times(0)).delete(any(Driver.class));
     }
 }

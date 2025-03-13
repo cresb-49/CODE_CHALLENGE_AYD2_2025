@@ -1,6 +1,8 @@
 package cresb.codeChallengue.service;
 
 import cresb.codeChallengue.dto.DriverDTO;
+import cresb.codeChallengue.exception.DriverAlreadyExists;
+import cresb.codeChallengue.exception.DriverNotExists;
 import cresb.codeChallengue.model.Driver;
 import java.util.List;
 
@@ -11,12 +13,13 @@ import cresb.codeChallengue.repository.DriverRepository;
 
 @Service
 public class DriverService {
+
     @Autowired
     DriverRepository driverRepository;
 
-    public Driver createDriver(Driver driver) {
-        if (driverRepository.findByName(driver.getName()) != null) {
-            throw new RuntimeException("Driver with name " + driver.getName() + " already exists");
+    public Driver createDriver(Driver driver) throws DriverAlreadyExists {
+        if (driverRepository.existsByName(driver.getName())) {
+            throw new DriverAlreadyExists(driver.getName());
         }
         return driverRepository.save(driver);
     }
@@ -28,7 +31,10 @@ public class DriverService {
     public Driver updateDriver(Long id, DriverDTO driverDTO) {
         Driver driver = driverRepository.findById(id);
         if (driver == null) {
-            throw new RuntimeException("Driver with id " + id + " not found");
+            throw new DriverNotExists("Driver with id " + id + " not found");
+        }
+        if (driverRepository.existsByName(driverDTO.getName())) {
+            throw new DriverAlreadyExists(driverDTO.getName());
         }
         driver.update(driverDTO);
         return driverRepository.save(driver);
@@ -37,7 +43,7 @@ public class DriverService {
     public void deleteDriver(Long id) {
         Driver driver = driverRepository.findById(id);
         if (driver == null) {
-            throw new RuntimeException("Driver with id " + id + " not found");
+            throw new DriverNotExists("Driver with id " + id + " not found");
         }
         driverRepository.delete(driver);
     }
